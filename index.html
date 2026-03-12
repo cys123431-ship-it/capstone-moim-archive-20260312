@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>모임 주선 웹사이트 뼈대</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a class="brand" href="#top">MOIM</a>
+        <nav class="menu">
+          <a href="#search">모임 찾기</a>
+          <a href="#map">지도 자리</a>
+          <a href="#mine">내 모임</a>
+          <a href="#manage">내가 만든 모임</a>
+          <a href="#create">모임 만들기</a>
+          <a href="login.html">로그인</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero-section">
+        <div class="container hero-card">
+          <div class="hero-copy">
+            <p class="eyebrow">디지털 모임 아카이브</p>
+            <h1>
+              <span class="hero-title-line">모임을 찾는 일을</span>
+              <span class="hero-title-line">작은 전시처럼</span>
+            </h1>
+            <p class="hero-text">
+              UNESCO Stolen Objects Museum의 조용한 전시 톤을 참고해 메인
+              화면을 다시 해석했습니다. 기능은 그대로 두고, 크림 계열 배경과
+              전시 안내문 같은 카드 구조로 첫인상을 더 차분하게 정리했습니다.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button primary" href="#search">아카이브 둘러보기</a>
+              <a class="button secondary" href="#create">새 모임 기록하기</a>
+            </div>
+
+            <div class="hero-ledger">
+              <article>
+                <strong>Observe</strong>
+                <p>조건을 고르며 원하는 모임을 천천히 탐색합니다.</p>
+              </article>
+              <article>
+                <strong>Join</strong>
+                <p>모집 중인 모임은 바로 열어보고 참여할 수 있습니다.</p>
+              </article>
+              <article>
+                <strong>Preserve</strong>
+                <p>직접 만든 모임은 따로 모아 수정하고 계속 관리합니다.</p>
+              </article>
+            </div>
+
+            <div class="hero-stats" id="statusCards"></div>
+          </div>
+
+          <aside class="hero-visual">
+            <div class="hero-visual-panel">
+              <div class="hero-badge hero-badge-top">Archive Room 01</div>
+              <div class="hero-badge hero-badge-bottom">스크롤하며 탐색</div>
+
+              <div class="hero-feature-card">
+                <p>이번 주 큐레이션</p>
+                <h2>자료구조 스터디</h2>
+                <p class="hero-feature-copy">
+                  개념 정리, 발표, 문제 풀이를 하나의 흐름으로 묶은 소규모
+                  학습 모임입니다.
+                </p>
+                <div class="hero-object-meta">
+                  <span>기록 번호 07</span>
+                  <span>캠퍼스</span>
+                  <span>참여 4/6</span>
+                </div>
+              </div>
+
+              <div class="hero-search-mock">
+                <span>원하는 키워드로 모임 아카이브 검색</span>
+                <span class="hero-search-button">탐색</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="feature-section section-block">
+        <div class="container">
+          <div class="section-title center">
+            <p class="eyebrow">전시형 흐름</p>
+            <h2>탐색, 참여, 기록을 한 화면 안에 배치했습니다</h2>
+            <p>
+              몰입형 박물관 전체를 복제하는 대신, 우리 서비스에 필요한 흐름만
+              남겨서 차분한 아카이브 화면으로 정리했습니다.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card tone-mint">
+              <strong>01. Observe</strong>
+              <h3>원하는 모임을 관찰하듯 찾기</h3>
+              <p>키워드와 조건을 골라 필요한 모임만 조용히 추려볼 수 있습니다.</p>
+            </article>
+
+            <article class="feature-card tone-cream">
+              <strong>02. Join</strong>
+              <h3>참여와 관리를 분리해서 보기</h3>
+              <p>내가 참여한 모임과 직접 연 모임을 다른 공간처럼 나눠서 다룹니다.</p>
+            </article>
+
+            <article class="feature-card tone-light">
+              <strong>03. Preserve</strong>
+              <h3>지금은 기록하고 다음 단계로 확장</h3>
+              <p>지도, 로그인, 결제는 나중에 붙이되 구조는 미리 남겨 두었습니다.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="search-section section-block" id="search">
+        <div class="container">
+          <div class="section-title">
+            <p class="eyebrow">1. 모임 찾기</p>
+            <h2>지금 열람할 수 있는 모임 아카이브</h2>
+            <p>
+              화면 분위기는 전시형으로 바꾸고, 검색 로직은 그대로 유지했습니다.
+              즉, 보기만 달라졌고 실제 찾는 방식은 이전과 같습니다.
+            </p>
+          </div>
+
+          <form class="search-form search-panel" id="searchForm">
+            <label>
+              키워드
+              <input
+                type="text"
+                id="keyword"
+                placeholder="예: 축구, 스터디, 맛집"
+              />
+            </label>
+
+            <label>
+              카테고리
+              <select id="category">
+                <option value="all">전체</option>
+                <option value="운동">운동</option>
+                <option value="공부">공부</option>
+                <option value="친목">친목</option>
+                <option value="게임">게임</option>
+              </select>
+            </label>
+
+            <label>
+              지역
+              <select id="location">
+                <option value="all">전체</option>
+                <option value="천안">천안</option>
+                <option value="아산">아산</option>
+                <option value="캠퍼스">캠퍼스</option>
+              </select>
+            </label>
+
+            <label>
+              상태
+              <select id="statusFilter">
+                <option value="all">전체</option>
+                <option value="open">모집중</option>
+                <option value="mine">참여중</option>
+                <option value="closed">마감</option>
+              </select>
+            </label>
+
+            <label>
+              정렬
+              <select id="sortOrder">
+                <option value="soon">가까운 날짜 순</option>
+                <option value="late">늦은 날짜 순</option>
+                <option value="seats">남은 자리 많은 순</option>
+                <option value="popular">참여 인원 많은 순</option>
+              </select>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="button primary">검색</button>
+              <button type="button" class="button secondary" id="resetButton">
+                초기화
+              </button>
+            </div>
+          </form>
+
+          <p class="result-summary" id="searchResultText"></p>
+          <div class="meeting-list" id="meetingList"></div>
+        </div>
+      </section>
+
+      <section class="section-block map-section" id="map">
+        <div class="container map-shell">
+          <div class="map-copy">
+            <p class="eyebrow">2. 지도 API 자리</p>
+            <h2>주변 모임 지도를 둘 공간</h2>
+            <p>
+              아직 지도 API는 붙이지 않았지만, 전시 안내도처럼 보이는 자리를
+              먼저 정리해 두었습니다. 이후 카카오맵이나 네이버맵을 연결하면
+              됩니다.
+            </p>
+
+            <div class="mini-feature-grid">
+              <article>
+                <strong>주변 모임</strong>
+                <p>현재 위치 근처 모임 표시 예정</p>
+              </article>
+              <article>
+                <strong>입장 권한</strong>
+                <p>모임 생성자 기준 권한 확장 가능</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="map-placeholder">
+            <div>
+              <strong>MAP PLACEHOLDER</strong>
+              <p>주변 모임 위치 표시 예정</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block mine-section" id="mine">
+        <div class="container">
+          <div class="section-title">
+            <p class="eyebrow">3. 내 모임</p>
+            <h2>내가 열람 중인 모임</h2>
+            <p>참여 중인 모임을 개인 아카이브처럼 따로 모아 확인하는 영역입니다.</p>
+          </div>
+          <div class="meeting-list mine-list" id="myMeetingList"></div>
+        </div>
+      </section>
+
+      <section class="section-block manage-section" id="manage">
+        <div class="container">
+          <div class="section-title">
+            <p class="eyebrow">4. 내가 만든 모임</p>
+            <h2>직접 기록한 모임 수정하고 삭제하기</h2>
+            <p>
+              이 영역에는 내가 만든 모임만 따로 보입니다. 수정 버튼을 누르면
+              아래 폼이 수정 모드로 바뀝니다.
+            </p>
+          </div>
+          <div class="meeting-list manage-list" id="managedMeetingList"></div>
+        </div>
+      </section>
+
+      <section class="section-block create-section" id="create">
+        <div class="container create-shell">
+          <div class="create-copy">
+            <div class="section-title">
+              <p class="eyebrow">5. 모임 기록하기</p>
+              <h2 id="formTitle">폼으로 새 모임 추가하기</h2>
+              <p id="formModeText">
+                지금은 추가 모드입니다. 새 모임 정보를 입력하면 목록 맨 위에
+                바로 추가됩니다.
+              </p>
+            </div>
+
+            <div class="help-box">
+              <h3>지금 단계에서 중요한 점</h3>
+              <ul>
+                <li>메인 화면 분위기가 바뀌어도 입력 흐름은 그대로 유지됩니다.</li>
+                <li>수정 모드로 바뀌면 같은 폼으로 기존 데이터를 다시 저장합니다.</li>
+                <li>브라우저 저장을 쓰기 때문에 새로고침 후에도 데이터가 남아 있습니다.</li>
+              </ul>
+            </div>
+          </div>
+
+          <form class="create-form create-panel" id="createForm">
+            <label>
+              모임 이름
+              <input type="text" id="newTitle" placeholder="예: 주말 농구 모임" required />
+            </label>
+
+            <label>
+              카테고리
+              <select id="newCategory" required>
+                <option value="운동">운동</option>
+                <option value="공부">공부</option>
+                <option value="친목">친목</option>
+                <option value="게임">게임</option>
+              </select>
+            </label>
+
+            <label>
+              지역
+              <select id="newLocation" required>
+                <option value="천안">천안</option>
+                <option value="아산">아산</option>
+                <option value="캠퍼스">캠퍼스</option>
+              </select>
+            </label>
+
+            <label>
+              날짜
+              <input type="date" id="newDate" required />
+            </label>
+
+            <label>
+              주최자 이름
+              <input type="text" id="newOrganizer" placeholder="예: 운영자 A" required />
+            </label>
+
+            <label>
+              모집 인원
+              <input type="number" id="newCapacity" min="2" max="99" value="10" required />
+            </label>
+
+            <label>
+              참가비
+              <input type="text" id="newFee" placeholder="예: 무료, 5,000원" required />
+            </label>
+
+            <label class="full-span">
+              모임 설명
+              <textarea
+                id="newDescription"
+                rows="5"
+                placeholder="이 모임에서 무엇을 하는지 적어주세요."
+                required
+              ></textarea>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="button primary" id="submitButton">
+                모임 추가
+              </button>
+              <button
+                type="button"
+                class="button secondary is-hidden"
+                id="cancelEditButton"
+              >
+                수정 취소
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="detail-dialog" id="detailDialog">
+      <div class="dialog-shell">
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">모임 상세 정보</p>
+            <h2 id="dialogTitle"></h2>
+          </div>
+          <button type="button" class="button secondary" id="closeDialogButton">
+            닫기
+          </button>
+        </div>
+
+        <div class="dialog-meta" id="dialogMeta"></div>
+
+        <section class="dialog-description">
+          <h3>모임 소개</h3>
+          <p id="dialogDescription"></p>
+        </section>
+
+        <div class="dialog-owner-actions is-hidden" id="dialogOwnerActions">
+          <button type="button" class="button secondary" id="dialogEditButton">
+            이 모임 수정
+          </button>
+          <button type="button" class="button danger" id="dialogDeleteButton">
+            이 모임 삭제
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <p class="footer-brand">MOIM</p>
+          <p class="footer-text">
+            팀 프로젝트용 모임 서비스를 UNESCO 톤의 전시형 랜딩으로 다시
+            해석한 버전입니다.
+          </p>
+        </div>
+
+        <div>
+          <strong>바로가기</strong>
+          <a href="#search">모임 찾기</a>
+          <a href="#create">모임 만들기</a>
+        </div>
+
+        <div>
+          <strong>현재 단계</strong>
+          <a href="login.html">로그인 UI</a>
+          <a href="#manage">내가 만든 모임 관리</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

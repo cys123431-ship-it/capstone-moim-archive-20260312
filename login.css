@@ -22,6 +22,7 @@ body {
     radial-gradient(circle at top right, rgba(20, 119, 247, 0.08), transparent 28%),
     linear-gradient(180deg, #edf0f4 0%, #e9edf3 100%);
   color: var(--text);
+  overflow-x: hidden;
 }
 
 button,
@@ -51,6 +52,10 @@ a {
   box-shadow: var(--shadow);
 }
 
+.login-stage > * {
+  min-width: 0;
+}
+
 .visual-panel {
   position: relative;
   overflow: hidden;
@@ -69,12 +74,14 @@ a {
   place-items: center;
   background: linear-gradient(180deg, rgba(246, 247, 251, 0.94), rgba(245, 246, 250, 1));
   padding: 48px 32px;
+  min-width: 0;
 }
 
 /* 바깥 상자와 안쪽 카드를 반대로 회전시켜 기울어진 패널 느낌만 남긴다. */
 .panel-shell {
   width: min(540px, 100%);
   transform: rotate(-4deg);
+  min-width: 0;
 }
 
 .login-card {
@@ -84,6 +91,7 @@ a {
   background: rgba(249, 250, 252, 0.96);
   border: 1px solid var(--panel-border);
   box-shadow: 0 24px 60px rgba(24, 32, 52, 0.1);
+  min-width: 0;
 }
 
 .back-link {
@@ -353,9 +361,21 @@ a {
     border-radius: 26px;
   }
 
+  .visual-panel {
+    min-height: 220px;
+  }
+
+  .form-stage {
+    padding: 20px 16px;
+  }
+
   .panel-shell,
   .login-card {
     transform: none;
+  }
+
+  .panel-shell {
+    width: 100%;
   }
 
   .login-card {
@@ -371,6 +391,16 @@ a {
     padding-top: 24px;
   }
 
+  .card-header h1 {
+    font-size: clamp(1.9rem, 9vw, 2.35rem);
+  }
+
+  .field-group input,
+  .primary-submit,
+  .google-button {
+    width: 100%;
+  }
+
   .support-row,
   .signup-row {
     flex-direction: column;
@@ -380,5 +410,23 @@ a {
   .signup-row {
     align-items: center;
     text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 10px;
+  }
+
+  .visual-panel {
+    min-height: 180px;
+  }
+
+  .login-card {
+    padding: 20px 16px;
+  }
+
+  .support-row {
+    gap: 12px;
   }
 }

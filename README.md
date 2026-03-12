@@ -36,3 +36,5 @@
 GitHub Pages 연결 후 아래 주소에서 볼 수 있습니다.
 
 - `https://cys123431-ship-it.github.io/capstone-moim-archive-20260312/`
+
+현재 배포는 `main` 브랜치의 루트 폴더를 그대로 올리는 방식으로 연결되어 있습니다.

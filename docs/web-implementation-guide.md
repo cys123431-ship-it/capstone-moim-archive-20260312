@@ -1483,21 +1483,21 @@ Figma 카드의 분위기처럼 보이게 만든 것입니다.
 
 - `README.md` 파일 추가
 - GitHub Pages 배포용 `.nojekyll` 파일 추가
-- GitHub Pages 자동 배포용 워크플로 파일 추가
+- GitHub Pages 배포 설정 연결
 
 ### 왜 추가했는가
 
 - 저장소에 처음 들어온 사람이 프로젝트 내용을 바로 이해할 수 있게 하기 위해
 - 정적 웹사이트를 GitHub Pages로 바로 배포할 수 있게 하기 위해
-- 이후 수정 내용을 `main`에 올리면 자동 배포되게 만들기 위해
+- 프로젝트 결과물을 링크 하나로 바로 보여줄 수 있게 하기 위해
 
 ### 어떻게 구현했는가
 
 - README에는 프로젝트 소개, 주요 기능, 파일 설명, 실행 방법을 짧고 쉽게 적었다
 - `.nojekyll` 파일을 추가해서 GitHub Pages가 정적 파일을 그대로 배포할 수 있게 준비했다
-- `.github/workflows/pages.yml` 파일을 추가해서 GitHub Actions가 사이트 파일을 자동 배포하게 설정했다
+- GitHub 저장소 설정에서 `main` 브랜치의 루트 폴더를 GitHub Pages 소스로 연결했다
 
 ### 다음에 할 일
 
-- GitHub Pages 설정을 실제로 켜서 배포 주소 확인
-- 필요하면 README에 화면 이미지나 배포 링크 추가
+- GitHub Pages 주소가 실제로 열리는지 최종 확인
+- 필요하면 README에 화면 이미지 추가

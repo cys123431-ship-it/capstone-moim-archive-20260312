@@ -193,13 +193,15 @@ function renderStatus() {
 // 카드 HTML을 한곳에서 만들면 목록/내 모임/관리 화면이 같은 모양을 공유할 수 있다.
 function createMeetingCard(item, mode = "default") {
   const isClosed = item.joined >= item.capacity;
-  const actionLabel = item.mine ? "참여 완료" : isClosed ? "모집 마감" : "참여 신청";
+  const actionLabel = item.mine ? "참여 완료" : isClosed ? "모집 마감" : "참여하기";
   const archiveCode = `ARCHIVE ${String(item.id).padStart(2, "0")}`;
+  const primaryLabel =
+    mode === "manage" ? "운영중" : item.mine ? "참여중" : isClosed ? "마감" : "추천";
   const actionButtons =
     mode === "manage"
       ? `
           <button class="button ghost" type="button" onclick="openDetail(${item.id})">
-            상세 보기
+            상세
           </button>
           <button class="button secondary" type="button" onclick="startEditMeeting(${item.id})">
             수정
@@ -210,7 +212,7 @@ function createMeetingCard(item, mode = "default") {
         `
       : `
           <button class="button ghost" type="button" onclick="openDetail(${item.id})">
-            상세 보기
+            상세
           </button>
           <button
             class="button secondary"
@@ -224,28 +226,27 @@ function createMeetingCard(item, mode = "default") {
 
   return `
     <article class="meeting-card">
-      <div class="card-topline">
-        <p class="archive-label">${archiveCode}</p>
-        <p class="archive-date">${formatDate(item.date)}</p>
+      <div class="card-poster">
+        <div class="card-pills">
+          <span class="card-pill primary">${primaryLabel}</span>
+          ${item.createdByMe ? '<span class="card-pill">개설</span>' : ""}
+        </div>
+        <span class="card-code">${archiveCode}</span>
       </div>
-      <div class="badge-row">
-        <span class="badge">${escapeHtml(item.category)}</span>
-        <span class="badge">${escapeHtml(item.location)}</span>
-      </div>
-      <div>
+      <div class="card-copy">
+        <p class="card-location">${escapeHtml(item.location)} · ${escapeHtml(item.category)}</p>
         <h3>${escapeHtml(item.title)}</h3>
-        <p>${escapeHtml(item.organizer)} 주최 · 기록 보관 중</p>
-      </div>
-      <p class="description-preview">${escapeHtml(truncateText(item.description, 54))}</p>
-      <div class="meta-row">
-        <span class="meta-chip">참여 ${item.joined}/${item.capacity}</span>
-        <span class="meta-chip">참가비 ${escapeHtml(item.fee)}</span>
-        ${item.createdByMe ? '<span class="meta-chip">내가 만든 모임</span>' : ""}
-      </div>
-      <div class="card-footer">
-        <p>${getSeatMessage(item)}</p>
-        <div class="card-actions">
-          ${actionButtons}
+        <p class="description-preview">${escapeHtml(truncateText(item.description, 42))}</p>
+        <div class="meta-row">
+          <span class="meta-chip">주최 ${escapeHtml(item.organizer)}</span>
+          <span class="meta-chip">참여 ${item.joined}/${item.capacity}</span>
+          <span class="meta-chip">${escapeHtml(item.fee)}</span>
+        </div>
+        <div class="card-footer">
+          <p class="card-schedule">${formatDate(item.date)} · ${getSeatMessage(item)}</p>
+          <div class="card-actions">
+            ${actionButtons}
+          </div>
         </div>
       </div>
     </article>

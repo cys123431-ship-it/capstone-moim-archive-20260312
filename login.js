@@ -4,10 +4,12 @@ const passwordInput = document.querySelector("#passwordInput");
 const togglePasswordButton = document.querySelector("#togglePasswordButton");
 const googleButton = document.querySelector("#googleButton");
 
+// 실제 인증 대신, 현재 단계가 UI 데모라는 점을 같은 위치에 안내한다.
 function showLoginMessage(message) {
   loginMessage.textContent = message;
 }
 
+// 비밀번호 칸의 type만 바꿔 가장 기본적인 보기/숨기기 흐름을 만든다.
 function togglePasswordVisibility() {
   const isPassword = passwordInput.type === "password";
   passwordInput.type = isPassword ? "text" : "password";
@@ -17,6 +19,7 @@ function togglePasswordVisibility() {
   );
 }
 
+// 지금 단계는 API 제외 범위라서 제출 시 실제 로그인 대신 안내 문구만 보여 준다.
 loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
 

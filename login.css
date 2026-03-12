@@ -1,3 +1,4 @@
+/* 로그인 화면도 색과 그림자 값을 변수로 분리해 나중에 톤을 쉽게 맞출 수 있게 한다. */
 :root {
   --bg: #eef1f5;
   --panel: #f6f7fb;
@@ -38,6 +39,7 @@ a {
   padding: 28px;
 }
 
+/* Figma 시안처럼 왼쪽 이미지를 두고 오른쪽에 입력 카드를 올리는 2단 구조다. */
 .login-stage {
   min-height: calc(100vh - 56px);
   display: grid;
@@ -69,6 +71,7 @@ a {
   padding: 48px 32px;
 }
 
+/* 바깥 상자와 안쪽 카드를 반대로 회전시켜 기울어진 패널 느낌만 남긴다. */
 .panel-shell {
   width: min(540px, 100%);
   transform: rotate(-4deg);
@@ -325,6 +328,7 @@ a {
   font-weight: 600;
 }
 
+/* 작은 화면에서는 회전과 2단 구성을 줄여서 입력 자체가 더 편하게 느껴지도록 바꾼다. */
 @media (max-width: 1120px) {
   .login-stage {
     grid-template-columns: 1fr;

@@ -1,3 +1,4 @@
+/* 색, 여백, 폰트를 변수로 모아 두면 전체 톤을 한 번에 바꾸기 쉽다. */
 :root {
   --bg: #f4e9db;
   --bg-deep: #e2d0bd;
@@ -95,6 +96,7 @@ textarea {
   padding: 28px 0 34px;
 }
 
+/* 메인 소개는 2단 그리드로 나눠 텍스트 정보와 시각 강조 영역의 역할을 분리한다. */
 .hero-card {
   display: grid;
   grid-template-columns: 1.04fr 0.96fr;
@@ -440,6 +442,7 @@ textarea {
   font-size: clamp(2.5rem, 4.5vw, 3.6rem);
 }
 
+/* 반복 카드 섹션은 grid를 써서 카드 수가 늘어나도 같은 규칙으로 정렬한다. */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -491,6 +494,7 @@ textarea {
   background: rgba(255, 248, 239, 0.78);
 }
 
+/* 검색 폼과 생성 폼은 같은 grid 규칙을 공유해 필드 추가/이동이 쉽다. */
 .search-form,
 .create-form {
   display: grid;
@@ -557,6 +561,7 @@ textarea::placeholder {
   font-weight: 500;
 }
 
+/* 모임 목록은 데이터만 다시 그리면 되도록 카드용 3열 레이아웃으로 유지한다. */
 .meeting-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -740,6 +745,7 @@ textarea::placeholder {
   text-align: center;
 }
 
+/* 긴 설명은 팝업으로 분리해 카드 자체는 짧고 읽기 쉽게 유지한다. */
 .detail-dialog {
   width: min(680px, calc(100% - 24px));
   padding: 0;
@@ -823,6 +829,7 @@ textarea::placeholder {
   color: rgba(246, 234, 220, 0.72);
 }
 
+/* 화면이 좁아지면 여러 열을 한 줄씩 접어 모바일에서도 같은 기능을 유지한다. */
 @media (max-width: 1120px) {
   .hero-card,
   .map-shell,

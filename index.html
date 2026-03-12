@@ -14,6 +14,7 @@
     <script src="script.js" defer></script>
   </head>
   <body>
+    <!-- 한 페이지 안에서 주요 기능 섹션으로 바로 이동할 수 있게 둔 상단 메뉴 -->
     <header class="site-header">
       <div class="container nav">
         <a class="brand" href="#top">MOIM</a>
@@ -29,6 +30,7 @@
     </header>
 
     <main id="top">
+      <!-- 첫 화면에서 서비스 성격, 현재 상태, 탐색 시작점을 함께 보여 주는 소개 영역 -->
       <section class="hero-section">
         <div class="container hero-card">
           <div class="hero-copy">
@@ -94,6 +96,7 @@
         </div>
       </section>
 
+      <!-- Observe / Join / Preserve 흐름을 먼저 설명해 화면 의도를 빠르게 이해시키는 섹션 -->
       <section class="feature-section section-block">
         <div class="container">
           <div class="section-title center">
@@ -127,6 +130,7 @@
         </div>
       </section>
 
+      <!-- 검색 UI는 지금은 정적 데이터에 연결되어 있지만, 나중에 DB 검색으로 그대로 확장할 수 있게 유지한다 -->
       <section class="search-section section-block" id="search">
         <div class="container">
           <div class="section-title">
@@ -202,6 +206,7 @@
         </div>
       </section>
 
+      <!-- 지도 API를 아직 붙이지 않아도, 나중에 들어갈 자리를 먼저 잡아 둔 영역 -->
       <section class="section-block map-section" id="map">
         <div class="container map-shell">
           <div class="map-copy">
@@ -234,6 +239,7 @@
         </div>
       </section>
 
+      <!-- 내가 참여한 모임만 따로 모아 보는 개인 보관함 역할의 섹션 -->
       <section class="section-block mine-section" id="mine">
         <div class="container">
           <div class="section-title">
@@ -245,6 +251,7 @@
         </div>
       </section>
 
+      <!-- 내가 직접 만든 모임만 골라 수정/삭제 흐름으로 이어지게 한 관리 섹션 -->
       <section class="section-block manage-section" id="manage">
         <div class="container">
           <div class="section-title">
@@ -259,6 +266,7 @@
         </div>
       </section>
 
+      <!-- 새 모임 추가와 기존 모임 수정을 같은 폼으로 처리하기 위한 입력 영역 -->
       <section class="section-block create-section" id="create">
         <div class="container create-shell">
           <div class="create-copy">
@@ -353,6 +361,7 @@
       </section>
     </main>
 
+    <!-- 카드에 다 담기 어려운 긴 설명은 dialog 팝업으로 따로 보여 준다 -->
     <dialog class="detail-dialog" id="detailDialog">
       <div class="dialog-shell">
         <div class="dialog-header">
@@ -383,6 +392,7 @@
       </div>
     </dialog>
 
+    <!-- 현재 단계와 바로가기를 한 번 더 정리해 주는 마무리 영역 -->
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>

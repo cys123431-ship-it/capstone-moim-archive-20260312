@@ -8,6 +8,7 @@ const legacyOrganizerMap = {
   곽진우: "운영자 E",
 };
 
+// 아직 DB가 없어서, 첫 화면을 바로 보여 주기 위한 샘플 데이터를 코드에 넣어 둔다.
 const defaultMeetings = [
   {
     id: 1,
@@ -131,6 +132,7 @@ function normalizeOrganizerName(value) {
   return legacyOrganizerMap[value] || value;
 }
 
+// 새로고침 후에도 데이터가 남도록 브라우저 localStorage를 우선 읽는다.
 function loadMeetings() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -159,6 +161,7 @@ function saveMeetings() {
   }
 }
 
+// 상단 숫자 카드는 전체 배열을 기준으로 매번 다시 계산해 보여 준다.
 function renderStatus() {
   const totalMeetings = meetings.length;
   const totalMembers = meetings.reduce((sum, item) => sum + item.joined, 0);
@@ -187,6 +190,7 @@ function renderStatus() {
     .join("");
 }
 
+// 카드 HTML을 한곳에서 만들면 목록/내 모임/관리 화면이 같은 모양을 공유할 수 있다.
 function createMeetingCard(item, mode = "default") {
   const isClosed = item.joined >= item.capacity;
   const actionLabel = item.mine ? "참여 완료" : isClosed ? "모집 마감" : "참여 신청";
@@ -286,6 +290,7 @@ function renderManagedMeetings() {
     .join("");
 }
 
+// 검색 폼에 입력된 값을 읽어 조건에 맞는 모임만 골라낸 뒤 정렬까지 한 번에 처리한다.
 function getFilteredMeetings() {
   const keyword = document.querySelector("#keyword").value.trim().toLowerCase();
   const category = document.querySelector("#category").value;
@@ -331,6 +336,7 @@ function getFormValues() {
   };
 }
 
+// 추가/수정에 같은 폼을 쓰기 때문에, 현재 폼이 어떤 모드인지 먼저 초기화해 둔다.
 function resetFormState() {
   editingMeetingId = null;
   createForm.reset();
@@ -341,6 +347,7 @@ function resetFormState() {
   cancelEditButton.classList.add("is-hidden");
 }
 
+// 수정 버튼을 누르면 기존 값을 폼에 다시 채워 넣어 "수정 모드"처럼 보이게 만든다.
 function startEditMeeting(id) {
   const selected = meetings.find((item) => item.id === id && item.createdByMe);
 
@@ -367,6 +374,7 @@ function startEditMeeting(id) {
   document.querySelector("#create").scrollIntoView({ behavior: "smooth" });
 }
 
+// editingMeetingId 값으로 새 모임 추가인지 기존 모임 수정인지 구분한다.
 function handleFormSubmit(event) {
   event.preventDefault();
 
@@ -442,6 +450,7 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+// 참여 신청도 결국은 데이터 변경 -> 저장 -> 화면 다시 그리기 흐름을 따른다.
 function joinMeeting(id) {
   const selected = meetings.find((item) => item.id === id);
 
@@ -465,6 +474,7 @@ function joinMeeting(id) {
   renderAll();
 }
 
+// 삭제 전 확인창을 두어 실수로 데이터를 지우는 일을 막는다.
 function deleteMeeting(id) {
   const selected = meetings.find((item) => item.id === id && item.createdByMe);
 
@@ -494,6 +504,7 @@ function deleteMeeting(id) {
   renderAll();
 }
 
+// 카드에는 요약만 두고, 자세한 정보는 dialog를 열 때 채워 넣는다.
 function openDetail(id) {
   const selected = meetings.find((item) => item.id === id);
 
@@ -543,6 +554,7 @@ function closeDetail() {
   dialogMeetingId = null;
 }
 
+// 데이터가 바뀌면 화면 일부만 따로 계산하지 않고 필요한 영역을 한 번에 다시 그린다.
 function renderAll() {
   renderStatus();
   applyFiltersAndRender();
@@ -550,6 +562,7 @@ function renderAll() {
   renderManagedMeetings();
 }
 
+// 버튼과 폼을 각각 연결해, 사용자의 입력이 곧바로 저장/필터/팝업 동작으로 이어지게 한다.
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   applyFiltersAndRender();

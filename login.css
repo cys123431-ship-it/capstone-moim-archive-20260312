@@ -40,15 +40,16 @@ a {
   padding: 28px;
 }
 
-/* Figma 시안처럼 왼쪽 이미지를 두고 오른쪽에 입력 카드를 올리는 2단 구조다. */
+/* 장식 이미지를 덜어내고 로그인 카드 하나에 시선을 모으는 단일 스테이지 구조다. */
 .login-stage {
   min-height: calc(100vh - 56px);
   display: grid;
-  grid-template-columns: 0.95fr 1.05fr;
-  align-items: stretch;
+  place-items: center;
   border-radius: 42px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.55);
+  padding: 36px 24px;
+  background:
+    radial-gradient(circle at top right, rgba(20, 119, 247, 0.1), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(245, 246, 250, 0.92));
   box-shadow: var(--shadow);
 }
 
@@ -56,36 +57,20 @@ a {
   min-width: 0;
 }
 
-.visual-panel {
-  position: relative;
-  overflow: hidden;
-}
-
-.visual-panel img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  transform: scale(1.04);
-}
-
 .form-stage {
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, rgba(246, 247, 251, 0.94), rgba(245, 246, 250, 1));
-  padding: 48px 32px;
+  width: 100%;
+  padding: 0;
   min-width: 0;
 }
 
-/* 바깥 상자와 안쪽 카드를 반대로 회전시켜 기울어진 패널 느낌만 남긴다. */
 .panel-shell {
-  width: min(540px, 100%);
-  transform: rotate(-4deg);
+  width: min(560px, 100%);
   min-width: 0;
 }
 
 .login-card {
-  transform: rotate(4deg);
   border-radius: 34px;
   padding: 34px 34px 30px;
   background: rgba(249, 250, 252, 0.96);
@@ -339,15 +324,7 @@ a {
 /* 작은 화면에서는 회전과 2단 구성을 줄여서 입력 자체가 더 편하게 느껴지도록 바꾼다. */
 @media (max-width: 1120px) {
   .login-stage {
-    grid-template-columns: 1fr;
-  }
-
-  .visual-panel {
-    min-height: 320px;
-  }
-
-  .form-stage {
-    padding-top: 0;
+    padding: 28px 20px;
   }
 }
 
@@ -359,19 +336,7 @@ a {
   .login-stage {
     min-height: auto;
     border-radius: 26px;
-  }
-
-  .visual-panel {
-    min-height: 220px;
-  }
-
-  .form-stage {
     padding: 20px 16px;
-  }
-
-  .panel-shell,
-  .login-card {
-    transform: none;
   }
 
   .panel-shell {
@@ -418,8 +383,8 @@ a {
     padding: 10px;
   }
 
-  .visual-panel {
-    min-height: 180px;
+  .login-stage {
+    padding: 14px 12px;
   }
 
   .login-card {

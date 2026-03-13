@@ -75,6 +75,8 @@ const defaultMeetings = [
 let meetings = loadMeetings();
 let editingMeetingId = null;
 let dialogMeetingId = null;
+let activeQuickFilter = "recommend";
+let featuredMeetingIndex = 0;
 
 const statusCards = document.querySelector("#statusCards");
 const meetingList = document.querySelector("#meetingList");
@@ -98,6 +100,20 @@ const dialogDescription = document.querySelector("#dialogDescription");
 const dialogOwnerActions = document.querySelector("#dialogOwnerActions");
 const dialogEditButton = document.querySelector("#dialogEditButton");
 const dialogDeleteButton = document.querySelector("#dialogDeleteButton");
+const keywordInput = document.querySelector("#keyword");
+const categorySelect = document.querySelector("#category");
+const locationSelect = document.querySelector("#location");
+const heroKicker = document.querySelector("#heroKicker");
+const heroTitle = document.querySelector("#heroTitle");
+const heroDescription = document.querySelector("#heroDescription");
+const heroDetailButton = document.querySelector("#heroDetailButton");
+const heroJoinButton = document.querySelector("#heroJoinButton");
+const heroPrevButton = document.querySelector("#heroPrevButton");
+const heroNextButton = document.querySelector("#heroNextButton");
+const heroPageIndicator = document.querySelector("#heroPageIndicator");
+const featuredTeaserList = document.querySelector("#featuredTeaserList");
+const quickFilterButtons = document.querySelectorAll("[data-quick-filter]");
+const quickActionButtons = document.querySelectorAll("[data-quick-action]");
 
 function getDefaultMeetings() {
   return defaultMeetings.map((item) => ({ ...item }));
@@ -254,7 +270,7 @@ function createMeetingCard(item, mode = "default") {
 }
 
 function renderMeetings(list) {
-  searchResultText.textContent = `현재 조건에 맞는 모임은 ${list.length}개입니다.`;
+  searchResultText.textContent = buildResultMessage(list.length);
 
   if (list.length === 0) {
     meetingList.innerHTML =
@@ -291,11 +307,165 @@ function renderManagedMeetings() {
     .join("");
 }
 
+function getQuickFilterLabel(filterName) {
+  const labels = {
+    recommend: "추천",
+    today: "당일",
+    small: "소규모",
+    weekend: "주말",
+    campus: "캠퍼스",
+    sports: "운동",
+    study: "공부",
+    social: "취향",
+    mine: "내 모임",
+  };
+
+  return labels[filterName] || "추천";
+}
+
+function getNearestMeetingDate(list) {
+  const uniqueDates = [...new Set(list.map((item) => item.date))];
+
+  if (uniqueDates.length === 0) {
+    return null;
+  }
+
+  return uniqueDates.sort((a, b) => new Date(a) - new Date(b))[0];
+}
+
+function matchesWeekend(item) {
+  const day = new Date(item.date).getDay();
+  return day === 0 || day === 6;
+}
+
+function applyQuickFilterRule(list) {
+  if (activeQuickFilter === "today") {
+    const nearestDate = getNearestMeetingDate(list);
+    return nearestDate ? list.filter((item) => item.date === nearestDate) : list;
+  }
+
+  if (activeQuickFilter === "small") {
+    return list.filter((item) => item.capacity <= 8);
+  }
+
+  if (activeQuickFilter === "weekend") {
+    return list.filter(matchesWeekend);
+  }
+
+  if (activeQuickFilter === "social") {
+    return list.filter(
+      (item) => item.category === "친목" || item.category === "게임"
+    );
+  }
+
+  return list;
+}
+
+function syncQuickFilterUi() {
+  quickFilterButtons.forEach((button) => {
+    const isActive = button.dataset.quickFilter === activeQuickFilter;
+    button.classList.toggle("is-active", isActive);
+    button.classList.toggle("is-current", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function buildResultMessage(count) {
+  const prefix =
+    activeQuickFilter === "recommend"
+      ? "현재 조건에 맞는"
+      : `${getQuickFilterLabel(activeQuickFilter)} 기준으로 찾은`;
+
+  return `${prefix} 모임은 ${count}개입니다.`;
+}
+
+function getFeaturedMeetings() {
+  const openMeetings = meetings.filter((item) => item.joined < item.capacity);
+  const baseList = openMeetings.length > 0 ? openMeetings : meetings;
+
+  return sortMeetings(baseList, "popular").slice(0, 6);
+}
+
+function getCurrentFeaturedMeeting() {
+  const featured = getFeaturedMeetings();
+
+  if (featured.length === 0) {
+    return null;
+  }
+
+  if (featuredMeetingIndex >= featured.length) {
+    featuredMeetingIndex = 0;
+  }
+
+  return featured[featuredMeetingIndex];
+}
+
+function renderFeaturedSection() {
+  const featured = getFeaturedMeetings();
+
+  if (featured.length === 0) {
+    heroKicker.textContent = "추천 모임 준비 중";
+    heroTitle.textContent = "새로운 모임을 만들면 이곳에 추천 배너가 표시됩니다.";
+    heroDescription.textContent =
+      "아직 보여 줄 모임이 없습니다. 아래 폼으로 새 모임을 만들면 첫 화면 추천 영역이 함께 갱신됩니다.";
+    heroPageIndicator.textContent = "추천 0 / 0";
+    heroDetailButton.disabled = true;
+    heroJoinButton.disabled = true;
+    heroJoinButton.textContent = "바로 참여";
+    heroPrevButton.disabled = true;
+    heroNextButton.disabled = true;
+    featuredTeaserList.innerHTML = "";
+    return;
+  }
+
+  const current = getCurrentFeaturedMeeting();
+  const teaserItems = Array.from(
+    { length: Math.min(featured.length, 3) },
+    (_, index) => featured[(featuredMeetingIndex + index) % featured.length]
+  );
+  const isClosed = current.joined >= current.capacity;
+
+  heroKicker.textContent = `${current.location} · ${current.category} 추천`;
+  heroTitle.textContent = current.title;
+  heroDescription.textContent = `${current.description} ${formatDate(
+    current.date
+  )}에 열리고, ${getSeatMessage(current)} 상태입니다.`;
+  heroPageIndicator.textContent = `추천 ${featuredMeetingIndex + 1} / ${
+    featured.length
+  }`;
+  heroDetailButton.disabled = false;
+  heroJoinButton.disabled = current.mine || isClosed;
+  heroJoinButton.textContent = current.mine
+    ? "참여 완료"
+    : isClosed
+    ? "모집 마감"
+    : "바로 참여";
+  heroPrevButton.disabled = featured.length <= 1;
+  heroNextButton.disabled = featured.length <= 1;
+
+  featuredTeaserList.innerHTML = teaserItems
+    .map(
+      (item, index) => `
+        <button
+          class="hero-teaser-card ${index === 0 ? "wide" : ""} ${
+            item.id === current.id ? "is-active" : ""
+          }"
+          type="button"
+          data-featured-id="${item.id}"
+        >
+          <span>${escapeHtml(item.location)} · ${formatDate(item.date)}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+        </button>
+      `
+    )
+    .join("");
+}
+
 // 검색 폼에 입력된 값을 읽어 조건에 맞는 모임만 골라낸 뒤 정렬까지 한 번에 처리한다.
 function getFilteredMeetings() {
-  const keyword = document.querySelector("#keyword").value.trim().toLowerCase();
-  const category = document.querySelector("#category").value;
-  const location = document.querySelector("#location").value;
+  const keyword = keywordInput.value.trim().toLowerCase();
+  const category = categorySelect.value;
+  const location = locationSelect.value;
   const status = statusFilter.value;
   const sort = sortOrder.value;
 
@@ -312,7 +482,7 @@ function getFilteredMeetings() {
     return matchesKeyword && matchesCategory && matchesLocation && matchesStatus;
   });
 
-  return sortMeetings(filtered, sort);
+  return sortMeetings(applyQuickFilterRule(filtered), sort);
 }
 
 function applyFiltersAndRender() {
@@ -321,7 +491,72 @@ function applyFiltersAndRender() {
 
 function resetFilters() {
   searchForm.reset();
+  activeQuickFilter = "recommend";
+  applyQuickPreset(activeQuickFilter);
   applyFiltersAndRender();
+  syncQuickFilterUi();
+}
+
+function applyQuickPreset(filterName) {
+  keywordInput.value = "";
+  categorySelect.value = "all";
+  locationSelect.value = "all";
+  statusFilter.value = "all";
+  sortOrder.value = filterName === "recommend" ? "popular" : "soon";
+
+  if (filterName === "campus") {
+    locationSelect.value = "캠퍼스";
+  }
+
+  if (filterName === "sports") {
+    categorySelect.value = "운동";
+  }
+
+  if (filterName === "study") {
+    categorySelect.value = "공부";
+  }
+
+  if (filterName === "mine") {
+    statusFilter.value = "mine";
+  }
+}
+
+function applyQuickFilter(filterName) {
+  activeQuickFilter = filterName;
+  applyQuickPreset(filterName);
+  applyFiltersAndRender();
+  syncQuickFilterUi();
+  document.querySelector("#search").scrollIntoView({ behavior: "smooth" });
+}
+
+function handleQuickAction(actionName) {
+  if (actionName === "create") {
+    document.querySelector("#create").scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+function moveFeaturedMeeting(step) {
+  const featured = getFeaturedMeetings();
+
+  if (featured.length <= 1) {
+    return;
+  }
+
+  featuredMeetingIndex =
+    (featuredMeetingIndex + step + featured.length) % featured.length;
+  renderFeaturedSection();
+}
+
+function selectFeaturedMeeting(id) {
+  const featured = getFeaturedMeetings();
+  const nextIndex = featured.findIndex((item) => item.id === id);
+
+  if (nextIndex === -1) {
+    return;
+  }
+
+  featuredMeetingIndex = nextIndex;
+  renderFeaturedSection();
 }
 
 function getFormValues() {
@@ -558,9 +793,11 @@ function closeDetail() {
 // 데이터가 바뀌면 화면 일부만 따로 계산하지 않고 필요한 영역을 한 번에 다시 그린다.
 function renderAll() {
   renderStatus();
+  renderFeaturedSection();
   applyFiltersAndRender();
   renderMyMeetings();
   renderManagedMeetings();
+  syncQuickFilterUi();
 }
 
 // 버튼과 폼을 각각 연결해, 사용자의 입력이 곧바로 저장/필터/팝업 동작으로 이어지게 한다.
@@ -585,7 +822,43 @@ dialogDeleteButton.addEventListener("click", () => {
     deleteMeeting(dialogMeetingId);
   }
 });
+heroDetailButton.addEventListener("click", () => {
+  const featured = getCurrentFeaturedMeeting();
+
+  if (featured) {
+    openDetail(featured.id);
+  }
+});
+heroJoinButton.addEventListener("click", () => {
+  const featured = getCurrentFeaturedMeeting();
+
+  if (featured) {
+    joinMeeting(featured.id);
+  }
+});
+heroPrevButton.addEventListener("click", () => moveFeaturedMeeting(-1));
+heroNextButton.addEventListener("click", () => moveFeaturedMeeting(1));
+featuredTeaserList.addEventListener("click", (event) => {
+  const card = event.target.closest("[data-featured-id]");
+
+  if (!card) {
+    return;
+  }
+
+  selectFeaturedMeeting(Number(card.dataset.featuredId));
+});
+quickFilterButtons.forEach((button) => {
+  button.addEventListener("click", () =>
+    applyQuickFilter(button.dataset.quickFilter)
+  );
+});
+quickActionButtons.forEach((button) => {
+  button.addEventListener("click", () =>
+    handleQuickAction(button.dataset.quickAction)
+  );
+});
 
 saveMeetings();
 resetFormState();
+applyQuickPreset(activeQuickFilter);
 renderAll();

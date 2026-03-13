@@ -101,7 +101,8 @@ textarea {
 }
 
 .menu a,
-.sub-menu a {
+.sub-menu a,
+.sub-menu-button {
   color: var(--muted);
   font-size: 0.97rem;
   font-weight: 700;
@@ -109,9 +110,19 @@ textarea {
 
 .menu a.is-current,
 .sub-menu a.is-current,
+.sub-menu-button.is-current,
+.sub-menu-button.is-active,
 .menu a:hover,
-.sub-menu a:hover {
+.sub-menu a:hover,
+.sub-menu-button:hover {
   color: var(--text);
+}
+
+.sub-menu-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .header-actions {
@@ -227,6 +238,12 @@ textarea {
   line-height: 1;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .hero-media {
   position: relative;
   min-height: 320px;
@@ -263,6 +280,19 @@ textarea {
   border: 1px solid rgba(23, 24, 26, 0.08);
   background: rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.hero-teaser-card:hover,
+.hero-teaser-card.is-active {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 16px 36px rgba(28, 30, 35, 0.12);
 }
 
 .hero-teaser-card.wide {
@@ -292,6 +322,36 @@ textarea {
   color: white;
   font-size: 0.78rem;
   font-weight: 700;
+}
+
+.hero-nav-button {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(23, 24, 26, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--text);
+  cursor: pointer;
+  transform: translateY(-50%);
+  box-shadow: var(--shadow);
+}
+
+.hero-nav-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.hero-nav-prev {
+  left: 0;
+}
+
+.hero-nav-next {
+  right: 0;
 }
 
 .dashboard-section {
@@ -361,6 +421,18 @@ textarea {
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.86);
   text-align: center;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.shortcut-tile:hover,
+.shortcut-tile.is-active {
+  transform: translateY(-2px);
+  border-color: rgba(23, 24, 26, 0.18);
+  background: white;
 }
 
 .shortcut-tile strong {
@@ -934,7 +1006,8 @@ textarea::placeholder {
   .dialog-header,
   .card-actions,
   .dialog-owner-actions,
-  .form-actions {
+  .form-actions,
+  .hero-actions {
     flex-direction: column;
     align-items: stretch;
   }
@@ -998,6 +1071,19 @@ textarea::placeholder {
     position: static;
     margin-top: 12px;
     justify-self: flex-end;
+  }
+
+  .hero-nav-button {
+    top: 18px;
+    transform: none;
+  }
+
+  .hero-nav-prev {
+    left: 18px;
+  }
+
+  .hero-nav-next {
+    right: 18px;
   }
 
   .button,

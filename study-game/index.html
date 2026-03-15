@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teamwork Study Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Serif+KR:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="study-data.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="sky-layer"></div>
+    <header class="game-header">
+      <div class="brand-lockup">
+        <p class="eyebrow">Code Playground</p>
+        <h1>Teamwork Study Game</h1>
+        <p class="subcopy">
+          팀 프로젝트 코드를 파일별 스테이지로 풀어보는 학습 게임입니다.
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <a class="header-link primary" href="../index.html">기존 웹 보기</a>
+        <a class="header-link" href="../docs/per-file-deep-explanations/00-readme.md">
+          설명 문서 보기
+        </a>
+      </div>
+    </header>
+
+    <main class="game-shell">
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="kicker">Mission Board</p>
+          <h2>파일 하나씩 열고, 줄 하나씩 맞히고, 구조를 몸으로 익히자</h2>
+          <p>
+            ScratchJr처럼 바로 눌러보고 반응을 받는 방식으로 만들었습니다.
+            정답을 맞힐수록 별이 쌓이고, 틀리면 곧바로 힌트로 다시 들어갈 수
+            있습니다.
+          </p>
+
+          <div class="hero-stats">
+            <article>
+              <strong id="bestScoreValue">0</strong>
+              <span>최고 점수</span>
+            </article>
+            <article>
+              <strong id="bestComboValue">0</strong>
+              <span>최고 콤보</span>
+            </article>
+            <article>
+              <strong id="clearCountValue">0</strong>
+              <span>클리어 횟수</span>
+            </article>
+          </div>
+        </div>
+        <p class="speech-bubble hero-note" id="speechBubble" aria-live="polite">
+          파일을 고르고 모드를 정한 뒤 미션 시작 버튼을 눌러 주세요.
+        </p>
+      </section>
+
+      <section class="selection-panel">
+        <div class="panel-head">
+          <div>
+            <p class="panel-label">1. 파일 선택</p>
+            <h3>어느 파일을 탐험할까요?</h3>
+          </div>
+        </div>
+        <div class="file-grid" id="fileGrid"></div>
+      </section>
+
+      <section class="selection-panel">
+        <div class="panel-head">
+          <div>
+            <p class="panel-label">2. 모드 선택</p>
+            <h3>어떤 방식으로 공부할까요?</h3>
+          </div>
+          <button class="start-button" id="startButton" type="button">미션 시작</button>
+        </div>
+        <div class="mode-grid" id="modeGrid"></div>
+      </section>
+
+      <section class="selection-panel learning-panel">
+        <div class="panel-head">
+          <div>
+            <p class="panel-label">3. 학습 흐름</p>
+            <h3>자유 플레이로 바로 풀거나, 공부 모드로 반복학습하세요</h3>
+            <p class="panel-copy">
+              공부 모드는 제가 추천하는 복습 주기를 기준으로 현재 회차와 다음 복습 시점을 안내합니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="learning-grid" id="playModeGrid"></div>
+
+        <section class="study-panel" id="studyPanel">
+          <div class="study-panel-head">
+            <div>
+              <p class="panel-label">공부 모드 설정</p>
+              <h4 id="studyHeadline">오늘은 1회차 학습이 추천됩니다.</h4>
+              <p class="study-copy" id="studyDescription">
+                선택한 파일과 모드 기준으로 추천 복습 회차를 계산합니다.
+              </p>
+            </div>
+          </div>
+
+          <div class="study-style-grid" id="studyStyleGrid"></div>
+          <div class="study-schedule-grid" id="studyScheduleGrid"></div>
+        </section>
+      </section>
+
+      <section class="selection-panel info-board-panel">
+        <div class="panel-head">
+          <div>
+            <p class="panel-label">4. 파일 읽기 보드</p>
+            <h3>게임 전에 구조를 훑어보고, 막히면 바로 참고하세요</h3>
+            <p class="panel-copy">
+              선택한 파일 정보, 기록, 설명 문서와 원본 코드 링크만 빠르게 확인합니다.
+            </p>
+          </div>
+        </div>
+        <div class="info-grid">
+          <section class="info-card info-card-feature">
+            <p class="panel-label">선택한 파일 정보</p>
+            <h3 id="infoTitle">index.html</h3>
+            <p id="infoRole"></p>
+            <div class="tag-row" id="infoBadges"></div>
+          </section>
+
+          <section class="info-card info-card-records">
+            <p class="panel-label">파일 기록</p>
+            <div class="record-grid">
+              <article class="record-item">
+                <span>최고 점수</span>
+                <strong id="fileBestScore">0</strong>
+              </article>
+              <article class="record-item">
+                <span>클리어</span>
+                <strong id="fileClearCount">0회</strong>
+              </article>
+              <article class="record-item">
+                <span>현재 랭크</span>
+                <strong id="fileRank">탐험 중</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="info-card info-card-links">
+            <p class="panel-label">바로 가기</p>
+            <div class="quick-links">
+              <a class="quick-link" id="docLink" href="#" target="_blank" rel="noreferrer">
+                설명 문서 열기
+              </a>
+              <a class="quick-link" id="sourceLink" href="#" target="_blank" rel="noreferrer">
+                소스 파일 열기
+              </a>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="selection-panel review-panel">
+        <div class="panel-head">
+          <div>
+            <p class="panel-label">5. 오답 복습 보드</p>
+            <h3>틀린 문제를 모아 다시 고르고, 일부만 따로 반복하세요</h3>
+            <p class="panel-copy">
+              전체 오답, 특정 모드, 특정 파일, 그리고 개별 문제 몇 개만 골라 복습할 수 있습니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="review-summary-grid" id="mistakeSummary"></div>
+
+        <div class="review-toolbar">
+          <label class="filter-field">
+            <span>파일 필터</span>
+            <select id="reviewFileFilter"></select>
+          </label>
+          <label class="filter-field">
+            <span>모드 필터</span>
+            <select id="reviewModeFilter"></select>
+          </label>
+          <div class="review-toolbar-actions">
+            <button class="tool-button" id="selectVisibleMistakesButton" type="button">
+              현재 목록 전체 선택
+            </button>
+            <button class="tool-button" id="clearSelectedMistakesButton" type="button">
+              선택 해제
+            </button>
+          </div>
+        </div>
+
+        <div class="review-cta-row">
+          <button class="start-button" id="startSelectedReviewButton" type="button">
+            선택한 문제 복습
+          </button>
+          <button class="tool-button" id="startVisibleReviewButton" type="button">
+            현재 목록 전체 복습
+          </button>
+          <button class="tool-button" id="startAllReviewButton" type="button">
+            오답 전체 복습
+          </button>
+        </div>
+
+        <div class="mistake-list" id="mistakeList"></div>
+      </section>
+
+      <section class="play-panel">
+        <article class="arena-panel">
+          <div class="hud-bar">
+            <div>
+              <p class="hud-label">현재 파일</p>
+              <strong id="selectedFileTitle">index.html</strong>
+            </div>
+            <div>
+              <p class="hud-label">모드</p>
+              <strong id="selectedModeTitle">구문 독해</strong>
+            </div>
+            <div>
+              <p class="hud-label">진행도</p>
+              <strong id="roundText">0 / 8</strong>
+            </div>
+            <div>
+              <p class="hud-label">점수</p>
+              <strong id="scoreText">0</strong>
+            </div>
+            <div>
+              <p class="hud-label">콤보</p>
+              <strong id="comboText">0</strong>
+            </div>
+          </div>
+
+          <div class="progress-shell">
+            <div class="progress-bar">
+              <span id="progressFill"></span>
+            </div>
+            <p id="stageLabel">준비 상태</p>
+          </div>
+
+          <div class="question-shell">
+            <p class="question-badge" id="questionBadge">Press Start</p>
+            <h3 class="question-title" id="questionTitle">
+              미션 시작을 누르면 첫 문제가 열립니다.
+            </h3>
+            <pre class="code-card" id="questionCode">파일을 먼저 골라 주세요.</pre>
+            <div class="choice-grid" id="choiceGrid"></div>
+            <div class="feedback-card" id="feedbackCard" aria-live="polite">
+              정답을 맞히면 즉시 점수와 콤보가 올라갑니다.
+            </div>
+            <div class="arena-actions">
+              <button class="tool-button" id="hintButton" type="button">힌트 보기</button>
+              <button class="tool-button primary" id="nextButton" type="button" disabled>
+                다음 문제
+              </button>
+            </div>
+            <p class="control-hint">
+              <kbd>1</kbd>~<kbd>4</kbd>로 보기 선택 · <kbd>H</kbd>로 힌트 ·
+              <kbd>Enter</kbd>로 다음 문제 또는 재시작
+            </p>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
